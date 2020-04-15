@@ -14,7 +14,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # step 2: Execute the script
 #################################################################################################
 
-import urllib2
+import urllib.request
 from base64 import b64encode
 import simplejson as json
 import csv
@@ -25,18 +25,18 @@ D42_PASSWORD = 'PASS'                       #your_d42_password_here
 CSV_FILE_NAME = 'device_report.csv'    #csv file name
 
 d42_get_devices_url = D42_URL+'/api/1.0/devices/all/'
-request = urllib2.Request(d42_get_devices_url)
-request.add_header('Authorization', 'Basic ' + b64encode(D42_USERNAME + ':' + D42_PASSWORD))
+request = urllib.request.Request(d42_get_devices_url)
+request.add_header('Authorization', 'Basic ' + b64encode((D42_USERNAME + ':' + D42_PASSWORD).encode('utf-8')).decode('utf-8'))
 
 try:
-    r = urllib2.urlopen(request)
+    r = urllib.request.urlopen(request)
     obj = r.read()
-    switchportdata = json.loads(obj)
+    switchportdata = json.loads(obj.decode('utf-8'))
 
-    f = csv.writer(open(CSV_FILE_NAME, "wb+"))
-    f.writerow(['Name', 'CPU Count','Cores', 'CPU Speed', 'Memory', 'Hardware'])
+    f = csv.writer(open(CSV_FILE_NAME, "w+"))
+    f.writerow(['Name', 'CPU Count', 'Cores', 'CPU Speed', 'Memory', 'Hardware'])
     for device in switchportdata['Devices']:
         f.writerow([device['name'], device['cpucore'], device['cpucount'], device['cpuspeed'], device['ram'], device['hw_model'], device['os']])
 
-except Exception, s: 
-    print str(s)        
+except Exception as s:
+    print(str(s))

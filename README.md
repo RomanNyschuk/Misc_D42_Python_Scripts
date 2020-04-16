@@ -18,8 +18,6 @@ To utilize the Misc_D42_Python_Scripts script, Python 3.5+ is required. The foll
 
 These can all be installed by running `pip install -r requirements.txt`.
 
-Once installed, the script itself is run by this command: `python sync.py`.
-
 ### Usage
 -----------------------------
 
